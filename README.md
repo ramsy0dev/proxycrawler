@@ -23,7 +23,7 @@
 
 # What is proxycrawler?
 
-proxycrawler, is as the name suggest is a proxy crawler and validator. proxycrawler scrapes services (as of v0.1.0 it supports only 2 services) that offer free proxies either displaied in a table so you can then go in the hell of trying to copy each one them and validate them, or by directly sending out requests to the API that these services use (like [geonode.com]())
+proxycrawler, is as the name suggest is a proxy crawler and validator. proxycrawler scrapes services (as of v0.1.0 it supports only 2 services) that offer free proxies either displaied in a table so you can then go in the hell of trying to copy each one them and validate them, or by directly sending out requests to the API that these services use (like [geonode.com](https://geonode.com))
 
 # What services does it scrap from?
 
