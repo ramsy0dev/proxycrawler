@@ -1,0 +1,196 @@
+import os
+import sys
+import typer
+
+from rich import print
+from rich.console import Console
+
+from proxycrawler import helpers
+from proxycrawler import constants
+from proxycrawler.messages import (
+    info,
+    errors
+)
+from proxycrawler.src.proxycrawler import ProxyCrawler
+from proxycrawler.src.database.database_handler import DatabaseHandler
+
+# Init cli
+cli = typer.Typer()
+
+@cli.command()
+def version():
+    """ proxycrawler's version """
+    print(f"[bold white]Version [bold cyan]{constants.VERSION}[bold white]")
+
+@cli.command()
+def scrap(
+    enable_save_on_run: bool = typer.Option(True, "--enable-save-on-run", help="Save valid proxies while proxycrawler is still running (can be useful in case of a bad internet connection)"),
+    group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, socks4, sock5]"),
+    output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
+):
+    """ Start scrapping proxies """
+    console = Console()
+
+    # Configuring console
+    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
+
+    # Check output file path
+    if output_file_path is not None and not os.path.exists("/".join(output_file_path.split("/")[:-1])):
+        console.log(
+            errors.UNVALID_OUTPUT_FILE_PATH(
+                output_file_path=output_file_path
+            )
+        )
+        sys.exit(1)
+
+    # Init database handler
+    database_handler = DatabaseHandler()
+
+    # Init ProxyCrawler
+    proxy_crawler = ProxyCrawler(
+        database_handler=database_handler,
+        console=console,
+    )
+
+    # Fetching proxies and validating them
+    proxy_crawler.crawl_proxies(
+        enable_save_on_run=enable_save_on_run,
+        group_by_protocol=group_by_protocol,
+        output_file_path=output_file_path
+    )
+
+@cli.command()
+def export_db(
+    proxies_count: int = typer.Option(None, "--proxies-count", help="Number of proxies to export (exports all by default)"),
+    validate_proxies: bool = typer.Option(True, "--validate", help="Validate proxies"),
+    group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, sock4, sock5]"),
+    output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
+):
+    """ Export proxies from the database """
+    console = Console()
+
+    # Configuring console
+    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
+
+    # Check output file path
+    if output_file_path is not None and not os.path.exists("/".join(output_file_path.split("/")[:-1])):
+        console.log(
+            errors.UNVALID_OUTPUT_FILE_PATH(
+                output_file_path=output_file_path
+            )
+        )
+        sys.exit(1)
+
+    # Init database handler
+    database_handler = DatabaseHandler()
+
+    # Init proxycrawler
+    proxy_crawler = ProxyCrawler(
+        database_handler=database_handler,
+        console=console,
+    )
+
+    console.log(
+        info.FETCHING_AND_VALIDATING_PROXIES_FROM_DATABASE
+    )
+
+    proxy_crawler.export_database_proxies(
+        proxies_count=proxies_count,
+        group_by_protocol=group_by_protocol,
+        validate_proxies=validate_proxies,
+        output_file_path=output_file_path
+    )
+
+@cli.command()
+def validate(
+    proxy_file_path: str = typer.Option(None, "--proxy-file", help="path to the proxy file"),
+    protocol: str = typer.Option(None, "--protocol", help="Set a specific protocol to test the proxies on"),
+    test_all_protocols: bool = typer.Option(False, "--test-all-protocols", help="Test all the protocols on a proxy"),
+    group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, sock4, sock5]"),
+    output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
+):
+    """ Validate a proxies list file """
+    console = Console()
+
+    # Configuring console
+    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
+
+    # Init database handler
+    database_handler = DatabaseHandler()
+
+    # Init proxycrawler
+    proxy_crawler = ProxyCrawler(
+        database_handler=database_handler,
+        console=console,
+    )
+
+    # Check output file path
+    if output_file_path is not None and not os.path.exists("/".join(output_file_path.split("/")[:-1])):
+        console.log(
+            errors.UNVALID_OUTPUT_FILE_PATH(
+                output_file_path=output_file_path
+            )
+        )
+        sys.exit(1)
+
+    # Check if the proxies file exists
+    if not os.path.exists(proxy_file_path):
+        console.log(errors.PROXY_FILE_DOESNT_EXIST)
+        sys.exit(1)
+
+    # Check the file's extension
+    if not proxy_file_path.endswith(".txt"):
+        console.log(errors.FILE_EXTENSION_NOT_SUPPORTED)
+        sys.exit(1)
+
+    # Check the format of the proxies
+    proxies = [proxy.strip() for proxy in open(proxy_file_path, "r").readlines()]
+    results = []
+
+    for proxy in proxies:
+        if not proxy_crawler.check_proxy_fromat(proxy=proxy):
+            results.append(proxy)
+
+    if len(results) != 0:
+        console.log(errors.UNVALID_PROXY_FORMAT)
+        sys.exit(1)
+
+    # Check the protocol
+    protocols = [
+        "http",
+        "https",
+        "socks4",
+        "socks5"
+    ]
+    if protocol is not None and protocol not in protocols:
+        console.log(
+            errors.UNVALID_PROXY_PROTOCOL(
+                protocol=protocol
+            )
+        )
+        sys.exit(1)
+
+    # Validate the list of proxies
+    console.log(
+        info.VALIDATING_PROXIES_FROM_FILE(
+            proxies_count=len(proxies),
+            proxy_file_path=proxy_file_path
+        )
+    )
+
+    proxy_crawler.validate_proxies(
+        proxies=proxies,
+        protocol=protocol,
+        test_all_protocols=test_all_protocols,
+        group_by_protocol=group_by_protocol,
+        proxy_file_path=proxy_file_path,
+        output_file_path=output_file_path
+    )
+
+def run():
+    """ Runs proxycrawler """
+    helpers.banner()
+    cli()
+
+if __name__ == "__main__":
+    run()
