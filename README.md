@@ -51,7 +51,7 @@ pip install dist/proxycrawler-*.tar.gz
 
 # Usage
 
-To see how to use proxycrawler and get a basic guide on how to get started. Please checkout the [wiki]()
+To see how to use proxycrawler and get a basic guide on how to get started. Please checkout the [wiki](https://github.com/ramsy0dev/proxycrawler/wiki/Usage)
 
 # Contributing
 
