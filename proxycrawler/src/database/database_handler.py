@@ -15,6 +15,7 @@ from proxycrawler.src.database.tables import Base, Proxies
 class DatabaseHandler (object):
     """ proxycrawler's database handler """
     def __init__(self) -> None:
+        """ Initializes the DatabaseHandler. """
         self.database_url = constants.DATABASE_URL
 
         # Check the database url
@@ -28,13 +29,13 @@ class DatabaseHandler (object):
         self.create_tables()
 
     def create_engine(self) -> create_engine:
-        """ Creates an egine object and returnes it """
+        """ Creates and returns a SQLAlchemy engine object. """
         return create_engine(
             url=self.database_url,
         )
 
     def create_tables(self) -> None:
-        """ Creates all the needed tables """
+        """ Creates all the necessary database tables. """
         session = sessionmaker(bind=self.engine)
 
         with session() as session:
@@ -42,7 +43,15 @@ class DatabaseHandler (object):
             session.commit()
 
     def save_proxy(self, proxy: Proxies) -> None:
-        """ Saves the proxy into the `proxies` table """
+        """
+        Saves a proxy into the 'proxies' table.
+
+        Args:
+            proxy (Proxies): The proxy to be saved.
+
+        Returns:
+            None: This method doesn't return anything.
+        """
         session = sessionmaker(bind=self.engine)
 
         with session() as session:
@@ -69,7 +78,15 @@ class DatabaseHandler (object):
             session.commit()
 
     def fetch_proxies(self, proxies_count: int | None = None) -> List[tuple[Proxies]]:
-        """ Fetch proxies from the database """
+        """
+        Fetches proxies from the 'proxies' table.
+
+        Args:
+            proxies_count (int, optional, default: None): The number of proxies to fetch. If None, all proxies are fetched.
+
+        Returns:
+            List[tuple[Proxies]]: A list of tuples containing the fetched proxies.
+        """
         session = sessionmaker(bind=self.engine)
 
         proxies = None
@@ -86,7 +103,15 @@ class DatabaseHandler (object):
         return proxies
 
     def update_proxy_valid_value(self, proxy: Proxies) -> None:
-        """ Updates the value of `is_valid` of proxies """
+        """
+        Updates the 'is_valid' value of a proxy in the 'proxies' table.
+
+        Args:
+            proxy (Proxies): The proxy to be updated.
+
+        Returns:
+            None: This method dones't return anything.
+        """
         session = sessionmaker(
             bind=self.engine
         )
@@ -103,13 +128,13 @@ class DatabaseHandler (object):
             session.commit()
 
     def _check_database_url(self) -> bool:
-        """ Checks if the database url is valid """
+        """ Checks if the database URL is valid. """
         database_path = self.database_url.replace("sqlite+pysqlite:///", "")
 
         return os.path.exists(database_path)
 
     def _create_database(self) -> None:
-        """ Create the sqlite database as the corresponding path """
+        """ Creates the SQLite database at the specified path. """
         database_path = self.database_url.replace("sqlite+pysqlite:///", "")
 
         os.makedirs(

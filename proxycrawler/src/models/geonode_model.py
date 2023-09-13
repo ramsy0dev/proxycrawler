@@ -15,7 +15,41 @@ from proxycrawler.messages import (
 from proxycrawler.src.database.tables import Proxies
 
 class GeonodeModel(object):
-    """ Geonode proxies service model """
+    """
+    Represents a proxy model for the `Geonode.com` proxies service.
+
+    Attributes:
+        ip (str): The IP address of the proxy.
+        anonymityLevel (str): The level of anonymity of the proxy.
+        protocols (list): A list of supported protocols by the proxy.
+        asn (str): The Autonomous System Number (ASN) of the proxy.
+        city (str): The city where the proxy is located.
+        country (str): The country where the proxy is located.
+        created_at (str): The timestamp when the proxy was created.
+        google (bool): Indicates Google compatibility.
+        isp (str): The Internet Service Provider (ISP) associated with the proxy.
+        lastChecked (int): Timestamp for when the proxy was last checked.
+        latency (float): The latency of the proxy.
+        org (str): The organization or entity behind the proxy.
+        port (str): The port number of the proxy.
+        region (str | None): The region where the proxy is located (or None if not available).
+        responseTime (int): The response time of the proxy.
+        speed (int): The speed of the proxy.
+        updated_at (str): The timestamp when the proxy was last updated.
+        workingPercent (float | None): The percentage of time the proxy is working (or None if not available).
+        upTime (float): The uptime of the proxy.
+        upTimeSuccessCount (int): The count of successful uptime checks.
+        upTimeTryCount (int): The total count of uptime check attempts.
+        proxy (dict): A dictionary containing proxy details for different protocols.
+        is_valid (bool): Indicates whether the proxy is valid or not.
+
+    Methods:
+        set_fields(data: dict): Sets the values for class attributes based on provided data.
+        validate(): Validates the proxy's compatibility with various protocols.
+        export_dict(): Exports the class attributes as a dictionary.
+        export_table_row(): Exports the proxy data as a `Proxies` table row.
+
+    """
     ip: str
     anonymityLevel: str
     protocols: list
@@ -44,7 +78,15 @@ class GeonodeModel(object):
         self.console = console
 
     def set_fields(self, data: dict) -> None:
-        """ Set the values for the fields """
+        """
+        Set the values for the class attributes
+
+        Args:
+            data (dict): The json response from the `Geonode.com`'s API
+
+        Returns:
+            None: This methods doesn't return anything
+        """
         for field in self.__annotations__:
             if field in ["proxy", "is_valid"]:
                 continue
@@ -52,7 +94,15 @@ class GeonodeModel(object):
             setattr(self, str(field), data.get(field, None))
 
     def validate(self) -> bool:
-        """ Validate the proxy """
+        """
+        Validate proxy
+
+        Args:
+            None
+
+        Returns:
+            bool: True if the proxy is valid, otherwise False is returned
+        """
         protocols = self.protocols
         proxy = {
 
@@ -104,34 +154,16 @@ class GeonodeModel(object):
 
         return self.is_valid
 
-    def export_tuple(self) -> tuple:
-        """ Export the fields into a tuple """
-        return (
-            self.ip,
-            self.anonymityLevel,
-            self.asn,
-            self.city,
-            self.country,
-            self.created_at,
-            self.google,
-            self.isp,
-            self.lastChecked,
-            self.latency,
-            self.org,
-            self.port,
-            self.protocols,
-            self.region,
-            self.responseTime,
-            self.speed,
-            self.updated_at,
-            self.workingPercent,
-            self.upTime,
-            self.upTimeSuccessCount,
-            self.upTimeTryCount
-        )
-
     def export_dict(self) -> dict:
-        """ Exports the fields into a dict """
+        """
+        Exports class attributes into a dict format.
+
+        Args:
+            None
+
+        Returns:
+            dict: Provides the class attributes in dictionary format.
+        """
         return {
             "ip": self.ip,
             "anonymityLevel": self.anonymityLevel,
@@ -157,7 +189,15 @@ class GeonodeModel(object):
         }
 
     def export_table_row(self) -> Proxies:
-        """ Exports the current proxies data into a `Proxies` table row """
+        """
+        Exports the current proxy data as a `Proxies` table row.
+
+        Args:
+            None
+
+        Returns:
+            Proxies: The `Proxies` table row containing the current proxy data.
+        """
         proxy_id = helpers.generate_uid(
             data=json.dumps(
                 self.export_dict()

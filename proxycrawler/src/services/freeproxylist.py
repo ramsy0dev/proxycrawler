@@ -11,7 +11,13 @@ from proxycrawler.messages import (
 from proxycrawler.src.models.free_proxy_list_model import FreeProxyListModel
 
 class FreeProxyList(object):
-    """ free-proxy-list.net """
+    """
+    This class is designed to scrape proxies from `free-proxy-list.net` using bs4
+
+    Attributes:
+        url (str): The official url for `free-proxy-list`.
+        valid_proxies (list[FreeProxyListModel]): A list of valid proxies represented in instances of the `FreeProxyListModel` class.
+    """
     url: str = "https://free-proxy-list.net"
     valid_proxies: list[FreeProxyListModel] = list()
 
@@ -19,11 +25,23 @@ class FreeProxyList(object):
         self.console = console
 
     def fetch_proxies(self) -> list[FreeProxyListModel]:
-        """ Fetches proxies with filter `country_code` """
+        """
+        Fetches proxies from `free-proxy-list.com` by scrapping them.
+
+        Args:
+            None
+
+        Returns:
+            list[FreeProxyListModel]: Returns a list of valid proxies represented in instances of the `FreeProxyListModel` class.
+        """
         headers = {
             "User-Agent": generate_user_agent()
         }
-        self.console.log(info.REQUESTING_FREE_PROXY_LIST(url=self.url))
+        self.console.log(
+            info.REQUESTING_FREE_PROXY_LIST(
+                url=self.url
+            )
+        )
 
         response = requests.get(
             self.url,
@@ -31,7 +49,11 @@ class FreeProxyList(object):
         )
 
         if response.status_code != 200:
-            self.console.log(errors.FAILD_TO_REQUEST_FREE_PROXY_LIST(error=response.text))
+            self.console.log(
+                errors.FAILD_TO_REQUEST_FREE_PROXY_LIST(
+                    error=response.text
+                )
+            )
 
         soup = BeautifulSoup(
             response.content,
@@ -60,4 +82,9 @@ class FreeProxyList(object):
                     if proxy.validate():
                         self.valid_proxies.append(proxy)
 
-                        self.console.log(info.FOUND_A_VALID_PROXY(proxy=proxy))
+                        self.console.log(
+                            info.FOUND_A_VALID_PROXY(
+                                proxy=proxy
+                            )
+                        )
+        return self.valid_proxies

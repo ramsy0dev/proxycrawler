@@ -15,19 +15,51 @@ from proxycrawler.messages import (
 from proxycrawler.src.database.tables import Proxies
 
 class ProxyModel(object):
-    """ Proxy model """
+    """
+    Represents a proxy model for handling proxy information for proxies that where fetched from a file.
+
+    Attributes:
+        proxy (dict): A dictionary containing proxy details for different protocols.
+        country (str): The country associated with the proxy (default: "Null").
+        is_valid (bool): Indicates whether the proxy is valid or not (default: False).
+
+    Methods:
+        __init__(self, ip: str, port: int, protocols: list[str], console: Console): Initializes the ProxyModel instance with the provided parameters.
+        validate(self) -> bool: Validates the proxy's compatibility with various protocols.
+        export_dict(self) -> dict: Exports the class attributes as a dictionary.
+        export_table_row(self) -> Proxies: Exports the proxy data as a `Proxies` table row.
+
+    """
     proxy: dict = dict()
     country: str = "Null"
     is_valid: bool = False
 
-    def __init__(self, ip: str, port: int, protocols: list[str], console: Console) -> None:
+    def __init__(self, ip: str, port: int, protocols: list[str], console: Console | None = None) -> None:
+        """
+        Initializes a ProxyModel instance with the provided parameters.
+
+        Args:
+            ip (str): The IP address of the proxy.
+            port (int): The port number of the proxy.
+            protocols (list[str]): A list of supported protocols by the proxy.
+            console (Console): An instance of the `rich.console.Console` for logging.
+
+        """
         self.ip = ip
         self.port = port
         self.protocols = protocols
         self.console = console
 
     def validate(self) -> bool:
-        """ Validate proxy """
+        """
+        Validate proxy
+
+        Args:
+            None
+
+        Returns:
+            bool: True if the proxy is valid, otherwise False is returned
+        """
         proxy = {
 
         }
@@ -85,7 +117,15 @@ class ProxyModel(object):
         return self.is_valid
 
     def export_dict(self) -> dict:
-        """ Exports fields into a dict """
+        """
+        Exports class attributes into a dict format.
+
+        Args:
+            None
+
+        Returns:
+            dict: Provides the class attributes in dictionary format.
+        """
         return {
             "ip"                  :     self.ip,
             "port"                :     self.port,
@@ -96,7 +136,15 @@ class ProxyModel(object):
         }
 
     def export_table_row(self) -> Proxies:
-        """ Exports the current proxies data into a `Proxies` table row """
+        """
+        Exports the current proxy data as a `Proxies` table row.
+
+        Args:
+            None
+
+        Returns:
+            Proxies: The `Proxies` table row containing the current proxy data.
+        """
         proxy_id = helpers.generate_uid(
             data=json.dumps(
                 self.export_dict()

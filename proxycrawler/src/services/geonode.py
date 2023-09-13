@@ -10,7 +10,15 @@ from proxycrawler.messages import (
 from proxycrawler.src.models.geonode_model import GeonodeModel
 
 class Geonode(object):
-    """ Geonode """
+    """
+    This class is designed to interface with the Geonode.com API to retrieve proxy data. Geonode.net offers up to 5000 proxies, and this class accomplishes this by sending HTTP requests with specified parameters such as 'limit,' 'page,' 'sort_by,' and 'sort_type.' Of particular importance is the 'page' parameter, which has a limit of 100. This means that in order to obtain all 5000 proxies, we need to send about 100 requests to the API. Each request yields a JSON response containing a 'data' key, which holds a list of dictionaries containing proxy information. It's important to note that each response is limited to approximately 500 proxies.
+
+    Attributes:
+        url (str): The official url for `Geonode.com`.
+        api_url (str): The URL of the API used for communication to retrieve proxies from Geonode.com.
+        params (dict): A dictionary containing the parameters accepted by the API for fetching proxies.
+        valid_proxies (list[GeonodeModel]): A list of valid proxies represented as instances of the `GeonodeModel` class.
+    """
     url: str = "https://geonode.com/free-proxy-list"
     api_url: str = "https://proxylist.geonode.com/api/proxy-list"
     params: dict = {
@@ -21,11 +29,19 @@ class Geonode(object):
     }
     valid_proxies: list[GeonodeModel] = list()
 
-    def __init__(self, console: Console) -> None:
+    def __init__(self, console: Console | None = None) -> None:
         self.console = console
 
     def fetch_proxies(self) -> list[GeonodeModel]:
-        """ Fetchs the proxies from Geonode """
+        """
+        Fetchs the proxies from Geonode's API
+
+        Args:
+            None
+
+        Returns:
+            list[GeonodeModel]: Returns a list of valid proxies represented as instances of the `GeonodeModel` class
+        """
         page_limit = 100
 
         for page_number in range(1, page_limit):

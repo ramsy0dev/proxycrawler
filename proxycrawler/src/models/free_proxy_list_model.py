@@ -15,7 +15,26 @@ from proxycrawler.messages import (
 from proxycrawler.src.database.tables import Proxies
 
 class FreeProxyListModel(object):
-    """ Proxy model """
+    """
+    Represents a proxy model for storing and validating proxy data from the `free-proxy-list.net` service.
+
+    Attributes:
+        ip (str): The IP address of the proxy.
+        port (str): The port number of the proxy.
+        proxy_country_code (str): The country code associated with the proxy.
+        country (str): The country name associated with the proxy.
+        provider (str): The provider or source of the proxy.
+        google (str): Information about Google compatibility.
+        https (str): Information about HTTPS support.
+        last_checked (str): Timestamp for when the proxy was last checked.
+        proxy (dict): A dictionary containing proxy details for different protocols.
+        is_valid (bool): Indicates whether the proxy is valid or not.
+
+    Methods:
+        validate(): Validates the proxy's compatibility with various protocols.
+        export_dict(): Exports the class attributes as a dictionary.
+        export_table_row(): Exports the proxy data as a `Proxies` table row.
+    """
     ip                  : str
     port                : str
     proxy_country_code  : str
@@ -27,12 +46,20 @@ class FreeProxyListModel(object):
     proxy               : dict  =   dict()
     is_valid            : bool  =   False
 
-    def __init__(self, console: Console) -> None:
-        self.protocols = list()
+    def __init__(self, console: Console | None = None) -> None:
+        self.protocols = list() # supported protocols
         self.console = console
 
     def validate(self) -> bool:
-        """ Validate the proxy """
+        """
+        Validate proxy
+
+        Args:
+            None
+
+        Returns:
+            bool: True if the proxy is valid, otherwise False is returned
+        """
         protocols = ["http", "https", "socks4", "socks5"]
         proxy = {
 
@@ -86,7 +113,15 @@ class FreeProxyListModel(object):
         return self.is_valid
 
     def export_dict(self) -> dict:
-        """ Exports the fields into a dict """
+        """
+        Exports class attributes into a dict format.
+
+        Args:
+            None
+
+        Returns:
+            dict: Provides the class attributes in dictionary format.
+        """
         return {
             "ip"                  : self.ip,
             "port"                : self.port,
@@ -101,7 +136,15 @@ class FreeProxyListModel(object):
         }
 
     def export_table_row(self) -> Proxies:
-        """ Exports the current proxies data into a `Proxies` table row """
+        """
+        Exports the current proxy data as a `Proxies` table row.
+
+        Args:
+            None
+
+        Returns:
+            Proxies: The `Proxies` table row containing the current proxy data.
+        """
         proxy_id = helpers.generate_uid(
             data=json.dumps(
                 self.export_dict()

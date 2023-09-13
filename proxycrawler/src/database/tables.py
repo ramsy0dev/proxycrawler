@@ -17,7 +17,7 @@ class Base(DeclarativeBase):
 
 # Tables
 class Proxies(Base):
-    """ Proxies table """
+    """ Proxies table model for storing proxy information. """
     __tablename__ = "proxies"
 
     # Columns
