@@ -7,9 +7,11 @@ from proxycrawler.messages import (
     info,
     errors
 )
+
+# Models
 from proxycrawler.src.models.geonode_model import GeonodeModel
 
-class Geonode(object):
+class Geonode:
     """
     This class is designed to interface with the Geonode.com API to retrieve proxy data. Geonode.net offers up to 5000 proxies, and this class accomplishes this by sending HTTP requests with specified parameters such as 'limit,' 'page,' 'sort_by,' and 'sort_type.' Of particular importance is the 'page' parameter, which has a limit of 100. This means that in order to obtain all 5000 proxies, we need to send about 100 requests to the API. Each request yields a JSON response containing a 'data' key, which holds a list of dictionaries containing proxy information. It's important to note that each response is limited to approximately 500 proxies.
 
@@ -18,6 +20,7 @@ class Geonode(object):
         api_url (str): The URL of the API used for communication to retrieve proxies from Geonode.com.
         params (dict): A dictionary containing the parameters accepted by the API for fetching proxies.
         valid_proxies (list[GeonodeModel]): A list of valid proxies represented as instances of the `GeonodeModel` class.
+        saved_proxies (list[str]): A list of proxies that were saved to the output file.
     """
     url: str = "https://geonode.com/free-proxy-list"
     api_url: str = "https://proxylist.geonode.com/api/proxy-list"
@@ -28,8 +31,14 @@ class Geonode(object):
         "sort_type": "desc"
     }
     valid_proxies: list[GeonodeModel] = list()
+    saved_proxies: list[str] = list()
 
-    def __init__(self, console: Console | None = None) -> None:
+    def __init__(self, database_handler, save_proxies_to_file, enable_save_on_run: bool | None = True, group_by_protocol: bool | None = False, output_file_path: str | None = None, console: Console | None = None) -> None:
+        self.database_handler = database_handler
+        self.save_proxies_to_file = save_proxies_to_file
+        self.enable_save_on_run = enable_save_on_run
+        self.group_by_protocol = group_by_protocol
+        self.output_file_path = output_file_path
         self.console = console
 
     def fetch_proxies(self) -> list[GeonodeModel]:
@@ -109,5 +118,26 @@ class Geonode(object):
                             proxy=proxy
                         )
                     )
+
+                    if not self.enable_save_on_run:
+                        continue
+
+                    # Save the proxy to the database in case `enable_save_on_run`
+                    self.database_handler.save_proxy(
+                        proxy=proxy.export_table_row()
+                    )
+
+            # Save to the output file in case `enable_save_on_run`
+            if not self.enable_save_on_run:
+                continue
+
+            self.save_proxies_to_file(
+                proxies=[proxy for proxy in self.valid_proxies if proxy not in self.saved_proxies],
+                group_by_protocol=self.group_by_protocol,
+                output_file_path=self.output_file_path
+            )
+
+            self.saved_proxies = [*self.saved_proxies, *self.valid_proxies]
+
 
         return self.valid_proxies
