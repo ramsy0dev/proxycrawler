@@ -8,9 +8,11 @@ from proxycrawler.messages import (
     info,
     errors
 )
+
+# Models
 from proxycrawler.src.models.free_proxy_list_model import FreeProxyListModel
 
-class FreeProxyList(object):
+class FreeProxyList:
     """
     This class is designed to scrape proxies from `free-proxy-list.net` using bs4
 
@@ -77,14 +79,13 @@ class FreeProxyList(object):
                 proxy.https               =   parts[6].text
                 proxy.last_checked        =   parts[7].text
 
-                if proxy.https == "yes":
-                    # Check if the proxy already exists and validate the proxy
-                    if proxy.validate():
-                        self.valid_proxies.append(proxy)
+                if proxy.validate():
+                    self.valid_proxies.append(proxy)
 
-                        self.console.log(
-                            info.FOUND_A_VALID_PROXY(
-                                proxy=proxy
-                            )
+                    self.console.log(
+                        info.FOUND_A_VALID_PROXY(
+                            proxy=proxy
                         )
+                    )
+
         return self.valid_proxies

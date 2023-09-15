@@ -14,8 +14,8 @@ from proxycrawler.messages import (
     debug,
     errors
 )
-from proxycrawler.src.database.database_handler import DatabaseHandler
 from proxycrawler.src.database.tables import Proxies
+from proxycrawler.src.database.database_handler import DatabaseHandler
 
 # Services
 from proxycrawler.src.services.geonode import Geonode
@@ -68,9 +68,17 @@ class ProxyCrawler:
         NOTE:
             If the `group_by_protocol` option is turned on, the proxies will be stored in the same directory as the custom file.
         """
+        self.enable_save_on_run     =   enable_save_on_run
+        self.group_by_protocol      =   group_by_protocol
+        self.output_file_path       =   output_file_path
+
         geonode = Geonode(
             console=self.console,
-
+            database_handler=self.database_handler,
+            save_proxies_to_file=self.save_proxies_to_file,
+            enable_save_on_run=self.enable_save_on_run,
+            group_by_protocol=self.group_by_protocol,
+            output_file_path=self.output_file_path
         )
         free_proxy_list = FreeProxyList(
             console=self.console
@@ -111,7 +119,7 @@ class ProxyCrawler:
             if not enable_save_on_run:
                 continue
 
-            self.output_save_paths = self.save_to_file(
+            self.output_save_paths = self.save_proxies_to_file(
                 proxies=proxies,
                 group_by_protocol=group_by_protocol,
                 output_file_path=output_file_path
@@ -121,7 +129,7 @@ class ProxyCrawler:
             for service in services:
                 proxies = services[service].valid_proxies
 
-                self.output_save_paths = self.save_to_file(
+                self.output_save_paths = self.save_proxies_to_file(
                     proxies=proxies,
                     group_by_protocol=group_by_protocol,
                     output_file_path=output_file_path
@@ -197,13 +205,13 @@ class ProxyCrawler:
                     )
 
         if len(valid_proxies) == 0 and not validate_proxies:
-            self.output_save_paths = self.save_to_file(
+            self.output_save_paths = self.save_proxies_to_file(
                 proxies=saved_database_proxies,
                 group_by_protocol=group_by_protocol,
                 output_file_path=output_file_path
             )
         else:
-            self.output_save_paths = self.save_to_file(
+            self.output_save_paths = self.save_proxies_to_file(
                 proxies=valid_proxies,
                 group_by_protocol=group_by_protocol,
                 output_file_path=output_file_path
@@ -357,7 +365,7 @@ class ProxyCrawler:
         if output_file_path is None:
             output_file_path = f"{proxy_file_path.split('/')[-1].replace('.txt', '')}-valid.txt"
 
-        self.output_save_paths = self.save_to_file(
+        self.output_save_paths = self.save_proxies_to_file(
             proxies=valid_proxies,
             group_by_protocol=group_by_protocol,
             output_file_path=output_file_path
@@ -384,7 +392,7 @@ class ProxyCrawler:
 
         return re.match(regex, proxy)
 
-    def save_to_file(
+    def save_proxies_to_file(
             self,
             proxies: list[FreeProxyListModel | GeonodeModel | ProxyModel],
             group_by_protocol: bool | None = False,
