@@ -17,6 +17,12 @@ from proxycrawler.src.database.database_handler import DatabaseHandler
 # Init cli
 cli = typer.Typer()
 
+# Init console
+console = Console()
+
+# Configuring console
+console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
+
 @cli.command()
 def version():
     """ proxycrawler's version """
@@ -29,11 +35,6 @@ def scrap(
     output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
 ):
     """ Start scrapping proxies """
-    console = Console()
-
-    # Configuring console
-    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
-
     # Check output file path
     if output_file_path is not None and not os.path.exists("/".join(output_file_path.split("/")[:-1])):
         console.log(
@@ -67,11 +68,6 @@ def export_db(
     output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
 ):
     """ Export proxies from the database """
-    console = Console()
-
-    # Configuring console
-    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
-
     # Check output file path
     if output_file_path is not None and not os.path.exists("/".join(output_file_path.split("/")[:-1])):
         console.log(
@@ -110,11 +106,6 @@ def validate(
     output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
 ):
     """ Validate a proxies list file """
-    console = Console()
-
-    # Configuring console
-    console._log_render.omit_repeated_times = False # Repeat the timestamp even if the logs were logged on the same time
-
     # Init database handler
     database_handler = DatabaseHandler()
 
