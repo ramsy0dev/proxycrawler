@@ -22,16 +22,16 @@ class Geonode:
         valid_proxies (list[GeonodeModel]): A list of valid proxies represented as instances of the `GeonodeModel` class.
         saved_proxies (list[str]): A list of proxies that were saved to the output file.
     """
-    url: str = "https://geonode.com/free-proxy-list"
-    api_url: str = "https://proxylist.geonode.com/api/proxy-list"
-    params: dict = {
-        "limit": 500,
-        "page": 1, # NOTE: page limit is 100
-        "sort_by": "lastChecked",
-        "sort_type": "desc"
-    }
-    valid_proxies: list[GeonodeModel] = list()
-    saved_proxies: list[str] = list()
+    url                 :       str                 =   "https://geonode.com/free-proxy-list"
+    api_url             :       str                 =   "https://proxylist.geonode.com/api/proxy-list"
+    params              :       dict                =   {
+                "limit": 500,
+                "page": 1, # NOTE: page limit is 100
+                "sort_by": "lastChecked",
+                "sort_type": "desc"
+            }
+    valid_proxies       :       list[GeonodeModel]  =   list()
+    saved_proxies       :       list[str]           =   list()
 
     def __init__(self, database_handler, save_proxies_to_file, enable_save_on_run: bool | None = True, group_by_protocol: bool | None = False, output_file_path: str | None = None, console: Console | None = None) -> None:
         self.database_handler = database_handler

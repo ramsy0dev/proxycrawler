@@ -35,16 +35,16 @@ class FreeProxyListModel(object):
         export_dict(): Exports the class attributes as a dictionary.
         export_table_row(): Exports the proxy data as a `Proxies` table row.
     """
-    ip                  : str
-    port                : str
-    proxy_country_code  : str
-    country             : str
-    provider            : str
-    google              : str
-    https               : str
-    last_checked        : str
-    proxy               : dict  =   dict()
-    is_valid            : bool  =   False
+    ip                      :       str
+    port                    :       str
+    proxy_country_code      :       str
+    country                 :       str
+    provider                :       str
+    google                  :       str
+    https                   :       str
+    last_checked            :       str
+    proxy                   :       dict    =   dict()
+    is_valid                :       bool    =   False
 
     def __init__(self, console: Console | None = None) -> None:
         self.protocols = list() # supported protocols

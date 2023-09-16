@@ -20,8 +20,8 @@ class FreeProxyList:
         url (str): The official url for `free-proxy-list`.
         valid_proxies (list[FreeProxyListModel]): A list of valid proxies represented in instances of the `FreeProxyListModel` class.
     """
-    url: str = "https://free-proxy-list.net"
-    valid_proxies: list[FreeProxyListModel] = list()
+    url                 :       str                         =   "https://free-proxy-list.net"
+    valid_proxies       :       list[FreeProxyListModel]    =   list()
 
     def __init__(self, console: Console):
         self.console = console

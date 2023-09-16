@@ -50,29 +50,29 @@ class GeonodeModel(object):
         export_table_row(): Exports the proxy data as a `Proxies` table row.
 
     """
-    ip: str
-    anonymityLevel: str
-    protocols: list
-    asn: str
-    city: str
-    country: str
-    created_at: str
-    google: bool
-    isp: str
-    lastChecked: int
-    latency: float
-    org: str
-    port: str
-    region: str | None
-    responseTime: int
-    speed: int
-    updated_at: str
-    workingPercent: float | None
-    upTime: float
-    upTimeSuccessCount: int
-    upTimeTryCount: int
-    proxy: dict = dict()
-    is_valid: bool = False
+    ip                      :       str
+    anonymityLevel          :       str
+    protocols               :       list
+    asn                     :       str
+    city                    :       str
+    country                 :       str
+    created_at              :       str
+    google                  :       bool
+    isp                     :       str
+    lastChecked             :       int
+    latency                 :       float
+    org                     :       str
+    port                    :       str
+    region                  :       str | None
+    responseTime            :       int
+    speed                   :       int
+    updated_at              :       str
+    workingPercent          :       float | None
+    upTime                  :       float
+    upTimeSuccessCount      :       int
+    upTimeTryCount          :       int
+    proxy                   :       dict    =   dict()
+    is_valid                :       bool    =   False
 
     def __init__(self, console: Console) -> None:
         self.console = console
