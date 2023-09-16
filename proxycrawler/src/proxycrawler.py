@@ -37,10 +37,9 @@ class ProxyCrawler:
         output_save_paths (list): A list that will store the paths to the files where the proxies where saved. There can be multipule files if the flag `--group-by-protocol` was used wich will seperate the proxies into different files based off their supported protocol
 
     """
-    free_proxy_list: list = list()
-    geonode_proxies_list: list = list()
-
-    output_save_paths: list = list()
+    free_proxy_list         :   list    = list()
+    geonode_proxies_list    :   list    = list()
+    output_save_paths       :   list    = list()
 
     def __init__(self, database_handler: DatabaseHandler, console: Console | None = None) -> None:
         self.database_handler = database_handler
@@ -68,10 +67,6 @@ class ProxyCrawler:
         NOTE:
             If the `group_by_protocol` option is turned on, the proxies will be stored in the same directory as the custom file.
         """
-        self.enable_save_on_run     =   enable_save_on_run
-        self.group_by_protocol      =   group_by_protocol
-        self.output_file_path       =   output_file_path
-
         geonode = Geonode(
             console=self.console,
             database_handler=self.database_handler,

@@ -30,9 +30,9 @@ class ProxyModel(object):
         export_table_row(self) -> Proxies: Exports the proxy data as a `Proxies` table row.
 
     """
-    proxy: dict = dict()
-    country: str = "Null"
-    is_valid: bool = False
+    proxy       :   dict    =   dict()
+    country     :   str     =   "Null"
+    is_valid    :   bool    =   False
 
     def __init__(self, ip: str, port: int, protocols: list[str], console: Console | None = None) -> None:
         """
