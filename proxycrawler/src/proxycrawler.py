@@ -71,9 +71,9 @@ class ProxyCrawler:
             console=self.console,
             database_handler=self.database_handler,
             save_proxies_to_file=self.save_proxies_to_file,
-            enable_save_on_run=self.enable_save_on_run,
-            group_by_protocol=self.group_by_protocol,
-            output_file_path=self.output_file_path
+            enable_save_on_run=enable_save_on_run,
+            group_by_protocol=group_by_protocol,
+            output_file_path=output_file_path
         )
         free_proxy_list = FreeProxyList(
             console=self.console
