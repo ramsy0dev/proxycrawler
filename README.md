@@ -23,21 +23,22 @@
 
 # What is proxycrawler?
 
-proxycrawler, is as the name suggest is a proxy crawler and validator. proxycrawler scrapes services (as of v0.1.0 it supports only 2 services) that offer free proxies either displaied in a table so you can then go in the hell of trying to copy each one them and validate them, or by directly sending out requests to the API that these services use (like [geonode.com](https://geonode.com))
+proxycrawler is, as the name suggests, a proxy crawler and validator. proxycrawler scrapes services (as of v0.1.0, it supports only 2 services) that offer free proxies, either displayed in a table so you can then go through the hassle of trying to copy each one of them and validate them, or by directly sending out requests to the API that these services use (like [Geonode.com](https://geonode.com)).
 
 # What services does it scrap from?
 
 As of v0.1.0 proxycrawler usilizes two services:
 
 * [free-proxy-list.net](https://free-proxy-list.net)
-* [Geonode.net](https:/geonode.net)
+* [Geonode.com](https://geonode.com)
 
 # Installation
 
 * ## Prerequisites
 
-    * Python3.10>=+
+    * Python3.10+
     * poetry
+
 * ## Install manually
 
 To install manually you will need `poetry` in order to build from source after you clone the repo:
@@ -59,4 +60,4 @@ All contributations are acceptable.
 
 # License
 
-GPL-V3.0
+GPL-3.0
