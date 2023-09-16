@@ -103,7 +103,7 @@ class GeonodeModel(object):
         Returns:
             bool: True if the proxy is valid, otherwise False is returned
         """
-        protocols = self.protocols
+        protocols = ["http", "https", "socks4", "socks5"]
         proxy = {
 
         }
