@@ -10,7 +10,7 @@ python = "^3.11"
 beautifulsoup4 = "^4.12.2"
 requests = "^2.31.0"
 user-agent = "^0.1.10"
-sqlalchemy = "^2.0.20"
+sqlalchemy = "^2.0.21"
 
 [tool.poetry.scripts]
 proxycrawler = "proxycrawler:__main__.run"
