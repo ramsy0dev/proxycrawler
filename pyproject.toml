@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proxycrawler"
-version = "0.1.0"
+version = "0.2.0"
 description = "A proxy scrapper and validator"
 authors = ["ramsy0dev <0ramsy0@gmail.com>"]
 readme = "README.md"
