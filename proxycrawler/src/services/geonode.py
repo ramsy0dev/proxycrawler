@@ -8,6 +8,7 @@ from proxycrawler.messages import (
     errors
 )
 
+from proxycrawler.src.database.database_handler import DatabaseHandler
 # Models
 from proxycrawler.src.models.geonode_model import GeonodeModel
 
@@ -33,7 +34,7 @@ class Geonode:
     valid_proxies       :       list[GeonodeModel]  =   list()
     saved_proxies       :       list[str]           =   list()
 
-    def __init__(self, database_handler, save_proxies_to_file, enable_save_on_run: bool | None = True, group_by_protocol: bool | None = False, output_file_path: str | None = None, console: Console | None = None) -> None:
+    def __init__(self, database_handler: DatabaseHandler, save_proxies_to_file, enable_save_on_run: bool | None = True, group_by_protocol: bool | None = False, output_file_path: str | None = None, console: Console | None = None) -> None:
         self.database_handler = database_handler
         self.save_proxies_to_file = save_proxies_to_file
         self.enable_save_on_run = enable_save_on_run
@@ -112,6 +113,10 @@ class Geonode:
                 )
                 if proxy.validate():
                     self.valid_proxies.append(proxy)
+
+                    # Save to database
+                    proxy_table = proxy.export_table_row()
+                    self.database_handler.save_proxy(proxy=proxy_table)
 
                     self.console.log(
                         info.FOUND_A_VALID_PROXY(
