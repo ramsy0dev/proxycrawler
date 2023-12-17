@@ -3,6 +3,7 @@ import string
 import random
 import hashlib
 import datetime
+import subprocess
 
 from rich import print
 
@@ -48,3 +49,42 @@ def generate_uid(data: str) -> str:
     generated_uuid = uuid.uuid5(uuid.NAMESPACE_DNS, hashed_data_salt)
 
     return str(generated_uuid)
+
+def check_for_update() -> (bool, str | None):
+    """
+    Check for any new updates.
+    
+    Args:
+        None.
+    
+    Returns:
+        (bool, str | None): True if there is an update with the new version tag, otherwise False is returned and None.
+    """
+    command = f"git ls-remote --tags {constants.GITHUB}"
+    output = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    git_output = output.stdout.decode()
+    latest_tag = None
+
+    if git_output.split("\n")[-1] == "":
+        latest_tag = git_output.split("\n")[-2][-6]
+    else:
+        latest_tag = git_output.split("\n")[-1][-6]
+    
+    return (result:=(constants.TAG == latest_tag), latest_tag if result else None)
+
+def self_update() -> str | None:
+    """
+    Updates proxycrawler
+    
+    Args:
+        None.
+    
+    Returns:
+        str | None: In case of an error message was raised it will be returned.
+    """
+    command = f"pip install git+{constants.GITHUB}"
+    output = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    error = output.stderr
+
+    return error.decode() if error.decode() != "" else None

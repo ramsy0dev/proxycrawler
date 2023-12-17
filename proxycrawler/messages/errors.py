@@ -3,6 +3,8 @@
     to log out to the end-user
 """
 
+FAILD_TO_UPDATE = lambda error: f"[bold red][ERROR] [bold white]Faild to update, the following error was raised: {error}"
+
 FILE_EXTENSION_NOT_SUPPORTED = f"[bold red][ERROR] [bold white]The provided proxy file's extension is not supported. Please make sure it's a plain text file (.txt) and try again"
 
 PROXY_FILE_DOESNT_EXIST = f"[bold red][ERROR] [bold white]The provided proxy file path doesn't seem to exists. Please verify it and try again"

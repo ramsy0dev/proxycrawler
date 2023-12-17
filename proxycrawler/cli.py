@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import typer
 
 from rich import print
@@ -178,6 +179,25 @@ def validate(
         output_file_path=output_file_path
     )
 
+@cli.command()
+def update():
+    """ Update proxycrawler """
+    with console.status("Checking for new updates") as status:
+        is_to_update, latest_tag = helpers.check_for_update()
+
+        if not is_to_update:
+            console.log(info.NO_UPDATE_FOUND)
+            sys.exit(0)
+
+        console.log(info.NEW_UPDATE_FOUND(latest_tag=latest_tag))
+        
+        status.update(f"Updating proxycrawler to [bold yellow]`{latest_tag}`")
+        
+        error = helpers.self_update()
+        if error is not None:
+            console.log(errors.FAILD_TO_UPDATE(error=error))
+            sys.exit(1)
+    
 def run():
     """ Runs proxycrawler """
     helpers.banner()
