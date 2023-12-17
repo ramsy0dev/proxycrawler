@@ -63,7 +63,7 @@ def scrap(
 @cli.command()
 def export_db(
     proxies_count: int = typer.Option(None, "--proxies-count", help="Number of proxies to export (exports all by default)"),
-    validate_proxies: bool = typer.Option(True, "--validate", help="Validate proxies"),
+    validate_proxies: bool = typer.Option(False, "--validate", help="Validate proxies"),
     group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, sock4, sock5]"),
     output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
 ):
@@ -178,6 +178,25 @@ def validate(
         output_file_path=output_file_path
     )
 
+@cli.command()
+def update():
+    """ Update proxycrawler """
+    with console.status("Checking for new updates") as status:
+        is_to_update, latest_tag = helpers.check_for_update()
+
+        if not is_to_update:
+            console.log(info.NO_UPDATE_FOUND)
+            sys.exit(0)
+
+        console.log(info.NEW_UPDATE_FOUND(latest_tag=latest_tag))
+        
+        status.update(f"Updating proxycrawler to [bold yellow]`{latest_tag}`")
+        
+        error = helpers.self_update()
+        if error is not None:
+            console.log(errors.FAILD_TO_UPDATE(error=error))
+            sys.exit(1)
+    
 def run():
     """ Runs proxycrawler """
     helpers.banner()

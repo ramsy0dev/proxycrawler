@@ -3,6 +3,10 @@
     to log out to the end-user
 """
 
+NEW_UPDATE_FOUND = lambda latest_tag: f"[bold green][INFO] [bold white]New update found [bold yellow]`{latest_tag}`[bold white]"
+
+NO_UPDATE_FOUND = "[bold green][INFO] [bold white]No new updates found"
+
 USING_SERVICE = lambda service_name, service_url: f"[bold green][INFO] [bold white]Using service [bold green]'{service_name}'[bold white] with url:[bold red]'{service_url}'[bold white]"
 
 REQUESTING_GEONODE_API = lambda api_url, payload: f"[bold green][INFO] [bold white]Requesting [bold green]Geonode[bold white]'s API at api_url:[bold green]'{api_url}'[bold white] with payload: {payload}"
@@ -15,6 +19,6 @@ PROXIES_SAVED_IN_PATHS = lambda output_file_paths: "[bold green][INFO] [bold whi
 
 FETCHING_AND_VALIDATING_PROXIES_FROM_DATABASE = f"[bold green][INFO] [bold white]Fetching and validating proxies from the database"
 
-FETCHED_PROXIES_FROM_THE_DATABASE = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database. Validating them..."
-
+FETCHED_PROXIES_FROM_THE_DATABASE_VALIDATING = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database. Validating them..."
+FETCHED_PROXIES_FROM_THE_DATABASE_WITHOUT_VALIDATING = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database"
 VALIDATING_PROXIES_FROM_FILE = lambda proxies_count, proxy_file_path: f"[bold green][INFO] [bold white]Found [bold green]'{proxies_count}'[bold white] proxies from [bold green]'{proxy_file_path}'[bold white]. Validating them..."
