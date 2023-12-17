@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 import typer
 
 from rich import print
