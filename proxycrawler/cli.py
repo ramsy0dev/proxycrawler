@@ -191,11 +191,9 @@ def update():
         console.log(info.NEW_UPDATE_FOUND(latest_tag=latest_tag))
         
         status.update(f"Updating proxycrawler to [bold yellow]`{latest_tag}`")
-        
-        error = helpers.self_update()
-        if error is not None:
-            console.log(errors.FAILD_TO_UPDATE(error=error))
-            sys.exit(1)
+        helpers.self_update()
+
+        console.log(f"[bold green][INFO] proxycrawler updated to [bold yellow]`{latest_tag}`")
     
 def run():
     """ Runs proxycrawler """

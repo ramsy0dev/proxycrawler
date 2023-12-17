@@ -67,11 +67,11 @@ def check_for_update() -> (bool, str | None):
     latest_tag = None
 
     if git_output.split("\n")[-1] == "":
-        latest_tag = git_output.split("\n")[-2][-6]
+        latest_tag = git_output.split("\n")[-2][-6:]
     else:
-        latest_tag = git_output.split("\n")[-1][-6]
-    
-    return (result:=(constants.TAG == latest_tag), latest_tag if result else None)
+        latest_tag = git_output.split("\n")[-1][-6:]
+
+    return (result:=(constants.TAG != latest_tag), latest_tag if result else None)
 
 def self_update() -> str | None:
     """
@@ -81,10 +81,7 @@ def self_update() -> str | None:
         None.
     
     Returns:
-        str | None: In case of an error message was raised it will be returned.
+        None.
     """
     command = f"pip install git+{constants.GITHUB}"
-    output = subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-    error = output.stderr
-
-    return error.decode() if error.decode() != "" else None
+    subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
