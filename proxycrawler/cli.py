@@ -182,6 +182,3 @@ def run():
     """ Runs proxycrawler """
     helpers.banner()
     cli()
-
-if __name__ == "__main__":
-    run()

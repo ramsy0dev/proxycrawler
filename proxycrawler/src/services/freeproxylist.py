@@ -1,13 +1,15 @@
 import requests
 
-from rich.console import Console
 from bs4 import BeautifulSoup
+from rich.console import Console
 from user_agent import generate_user_agent
 
 from proxycrawler.messages import (
     info,
     errors
 )
+
+from proxycrawler.src.database.database_handler import  DatabaseHandler
 
 # Models
 from proxycrawler.src.models.free_proxy_list_model import FreeProxyListModel
@@ -23,7 +25,8 @@ class FreeProxyList:
     url                 :       str                         =   "https://free-proxy-list.net"
     valid_proxies       :       list[FreeProxyListModel]    =   list()
 
-    def __init__(self, console: Console):
+    def __init__(self, database_handler: DatabaseHandler, console: Console):
+        self.database_handler = database_handler
         self.console = console
 
     def fetch_proxies(self) -> list[FreeProxyListModel]:
@@ -81,7 +84,11 @@ class FreeProxyList:
 
                 if proxy.validate():
                     self.valid_proxies.append(proxy)
-
+                    
+                    # Save to database
+                    proxy_table = proxy.export_table_row()
+                    self.database_handler.save_proxy(proxy=proxy_table)
+                    
                     self.console.log(
                         info.FOUND_A_VALID_PROXY(
                             proxy=proxy

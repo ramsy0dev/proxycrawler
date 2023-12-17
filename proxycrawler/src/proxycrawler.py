@@ -76,6 +76,7 @@ class ProxyCrawler:
             output_file_path=output_file_path
         )
         free_proxy_list = FreeProxyList(
+            database_handler=self.database_handler,
             console=self.console
         )
 
@@ -99,15 +100,15 @@ class ProxyCrawler:
             # Fetching and validating proxies from `service_name`
             service.fetch_proxies()
 
-            # Saving the proxies to the database
             proxies = service.valid_proxies
 
-            for proxy in proxies:
-                proxy = proxy.export_table_row()
+            # Saving the proxies to the database
+            # for proxy in proxies:
+            #     proxy = proxy.export_table_row()
 
-                self.database_handler.save_proxy(
-                    proxy=proxy
-                )
+            #     self.database_handler.save_proxy(
+            #         proxy=proxy
+            #     )
 
             # Save to the output file on the run in case
             # `self.enable_save_on_run` was enabled
