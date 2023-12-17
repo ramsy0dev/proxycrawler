@@ -170,36 +170,45 @@ class ProxyCrawler:
             )
             sys.exit(1)
 
-        self.console.log(
-            info.FETCHED_PROXIES_FROM_THE_DATABASE(
-                count=len(saved_database_proxies)
+        if valid_proxies:
+            self.console.log(
+                info.FETCHED_PROXIES_FROM_THE_DATABASE_VALIDATING(
+                    count=len(saved_database_proxies)
+                )
             )
-        )
-
+        else:
+            self.console.log(
+                info.FETCHED_PROXIES_FROM_THE_DATABASE_WITHOUT_VALIDATING(
+                    count=len(saved_database_proxies)
+                )
+            )
+        
         for proxy in saved_database_proxies:
             proxy = proxy[0]
 
-            if validate_proxies:
-                if self.validate_db_proxies(proxy=proxy):
-                    valid_proxies.append(proxy)
+            if not validate_proxies:
+                valid_proxies.append(proxy)
+                continue
 
-                    self.database_handler.update_proxy_valid_value(
+            if self.validate_db_proxies(proxy=proxy):
+                valid_proxies.append(proxy)
+
+                self.database_handler.update_proxy_valid_value(
+                    proxy=proxy
+                )
+
+                self.console.log(
+                    info.FOUND_A_VALID_PROXY(
                         proxy=proxy
                     )
+                )
 
-                    self.console.log(
-                        info.FOUND_A_VALID_PROXY(
-                            proxy=proxy
-                        )
-                    )
+            else:
+                proxy.is_valid = False
 
-                else:
-                    proxy.is_valid = False
-
-                    self.database_handler.update_proxy_valid_value(
-                        proxy=proxy
-                    )
-
+                self.database_handler.update_proxy_valid_value(
+                    proxy=proxy
+                )
         if len(valid_proxies) == 0 and not validate_proxies:
             self.output_save_paths = self.save_proxies_to_file(
                 proxies=saved_database_proxies,

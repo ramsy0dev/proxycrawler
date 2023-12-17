@@ -63,7 +63,7 @@ def scrap(
 @cli.command()
 def export_db(
     proxies_count: int = typer.Option(None, "--proxies-count", help="Number of proxies to export (exports all by default)"),
-    validate_proxies: bool = typer.Option(True, "--validate", help="Validate proxies"),
+    validate_proxies: bool = typer.Option(False, "--validate", help="Validate proxies"),
     group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, sock4, sock5]"),
     output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
 ):

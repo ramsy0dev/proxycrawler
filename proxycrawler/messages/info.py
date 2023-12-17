@@ -19,6 +19,6 @@ PROXIES_SAVED_IN_PATHS = lambda output_file_paths: "[bold green][INFO] [bold whi
 
 FETCHING_AND_VALIDATING_PROXIES_FROM_DATABASE = f"[bold green][INFO] [bold white]Fetching and validating proxies from the database"
 
-FETCHED_PROXIES_FROM_THE_DATABASE = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database. Validating them..."
-
+FETCHED_PROXIES_FROM_THE_DATABASE_VALIDATING = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database. Validating them..."
+FETCHED_PROXIES_FROM_THE_DATABASE_WITHOUT_VALIDATING = lambda count: f"[bold green][INFO] [bold white]Fetched [bold green]'{count}'[bold white] proxies from the database"
 VALIDATING_PROXIES_FROM_FILE = lambda proxies_count, proxy_file_path: f"[bold green][INFO] [bold white]Found [bold green]'{proxies_count}'[bold white] proxies from [bold green]'{proxy_file_path}'[bold white]. Validating them..."
