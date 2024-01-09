@@ -10,7 +10,7 @@ python = "^3.10"
 beautifulsoup4 = "^4.12.2"
 requests = "^2.31.0"
 user-agent = "^0.1.10"
-sqlalchemy = "^2.0.24"
+sqlalchemy = "^2.0.25"
 typer = "^0.9.0"
 rich = "^13.7.0"
 
