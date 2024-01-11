@@ -32,7 +32,8 @@ def version():
 def scrap(
     enable_save_on_run: bool = typer.Option(True, "--enable-save-on-run", help="Save valid proxies while proxycrawler is still running (can be useful in case of a bad internet connection)"),
     group_by_protocol: bool = typer.Option(False, "--group-by-protocol", help="Save proxies into seperate files based on the supported protocols [http, https, socks4, sock5]"),
-    output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)")
+    output_file_path: str = typer.Option(None, "--output-file-path", help="Costum output file path to save results (.txt)"),
+    validate_proxies: bool = typer.Option(False, "--validate", help="Validate each proxy that was found (this will make the scrapper run more slower)")
 ):
     """ Start scrapping proxies """
     # Check output file path
@@ -57,6 +58,7 @@ def scrap(
     proxy_crawler.crawl_proxies(
         enable_save_on_run=enable_save_on_run,
         group_by_protocol=group_by_protocol,
+        validate_proxies=validate_proxies,
         output_file_path=output_file_path
     )
 

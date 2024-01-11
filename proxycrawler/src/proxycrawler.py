@@ -49,6 +49,7 @@ class ProxyCrawler:
             self,
             enable_save_on_run: bool | None = True,
             group_by_protocol: bool | None = False,
+            validate_proxies: bool | None = False,
             output_file_path: str | None = None
         ) -> None:
         """
@@ -59,6 +60,7 @@ class ProxyCrawler:
         Args:
             enable_save_on_run (bool, optional, default: True): Save the validated proxies of a service after finishing scrapping it.
             group_by_protocol: (bool, optional, default: False): Save the proxies into seperate files depending on the supported protocol type.
+            validate_proxies (bool, optional, default: False): Is to validate each proxy that was found (enabling this will make the scrapping process run more slower).
             output_file_path: (str, optional, default: None): A custom output file path to save the proxies to.
 
         Returns:
@@ -73,10 +75,12 @@ class ProxyCrawler:
             save_proxies_to_file=self.save_proxies_to_file,
             enable_save_on_run=enable_save_on_run,
             group_by_protocol=group_by_protocol,
+            validate_proxies=validate_proxies,
             output_file_path=output_file_path
         )
         free_proxy_list = FreeProxyList(
             database_handler=self.database_handler,
+            validate_proxies=validate_proxies,
             console=self.console
         )
 
@@ -100,19 +104,19 @@ class ProxyCrawler:
             # Fetching and validating proxies from `service_name`
             service.fetch_proxies()
 
-            proxies = service.valid_proxies
-
-            # Saving the proxies to the database
-            # for proxy in proxies:
-            #     proxy = proxy.export_table_row()
-
-            #     self.database_handler.save_proxy(
-            #         proxy=proxy
-            #     )
+            proxies = service.found_proxies
 
             # Save to the output file on the run in case
             # `self.enable_save_on_run` was enabled
             if not enable_save_on_run:
+                # Saving the proxies to the database
+                for proxy in proxies:
+                    proxy = proxy.export_table_row()
+
+                    self.database_handler.save_proxy(
+                        proxy=proxy
+                    )
+                
                 continue
 
             self.output_save_paths = self.save_proxies_to_file(
