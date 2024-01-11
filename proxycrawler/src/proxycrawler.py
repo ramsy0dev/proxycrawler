@@ -486,6 +486,4 @@ class ProxyCrawler:
 
             output_save_paths.append(protocols[protocol]["output_file_path"])
 
-        self.console.log(output_save_paths)
-
         return output_save_paths

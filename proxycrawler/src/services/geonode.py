@@ -89,7 +89,6 @@ class Geonode:
                     headers=headers
                 )
                 
-                print(f"{response.status_code = }, {response.content.decode() = }")
                 if response.status_code != 200:
                     continue
 
