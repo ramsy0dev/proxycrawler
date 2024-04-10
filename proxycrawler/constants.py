@@ -23,6 +23,3 @@ HOME = os.path.expanduser("~")
 
 # Database URL
 DATABASE_URL = f"sqlite+pysqlite:///{HOME}/.proxycrawler/database.db"
-
-# Debug proxycrawler
-DEBUG = False # Set this to True to enable debug mode
