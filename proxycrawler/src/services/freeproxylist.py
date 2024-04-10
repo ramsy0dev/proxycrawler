@@ -88,7 +88,8 @@ class FreeProxyList:
                 proxy_table = proxy.export_table_row()
 
                 if self.validate_proxies:
-                    if proxy.validate(): proxy_table.is_valid = True
+                    if proxy.validate():
+                        proxy_table.is_valid = True
                 else:
                     # Since we don't know what protocols does the proxy support
                     # we will just set it to all.
