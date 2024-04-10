@@ -152,9 +152,7 @@ class Geonode:
                 continue
 
             self.save_proxies_to_file(
-                proxies=[proxy for proxy in self.found_proxies if proxy not in self.saved_proxies],
-                group_by_protocol=self.group_by_protocol,
-                output_file_path=self.output_file_path
+                proxies=[proxy for proxy in self.found_proxies if proxy not in self.saved_proxies]
             )
 
             self.saved_proxies = [*self.saved_proxies, *self.found_proxies]

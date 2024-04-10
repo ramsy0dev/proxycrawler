@@ -46,29 +46,16 @@ class ProxyCrawler:
         self.console = console
         self.cli_options = cli_options
 
-    def crawl_proxies(
-            self,
-            # enable_save_on_run: bool | None = True,
-            # group_by_protocol: bool | None = False,
-            # validate_proxies: bool | None = False,
-            # output_file_path: str | None = None
-        ) -> None:
+    def crawl_proxies(self) -> None:
         """
         Starts crawling proxies from all the known services
 
         This method initiates the process of gathering proxy information from various services. It takes several parameters, including options to enable saving the crawled proxies on the run to a file and group them by protocol. Additionally, you can specify a custom output file path for saving the results.
 
         Args:
-            enable_save_on_run (bool, optional, default: True): Save the validated proxies of a service after finishing scrapping it.
-            group_by_protocol: (bool, optional, default: False): Save the proxies into seperate files depending on the supported protocol type.
-            validate_proxies (bool, optional, default: False): Is to validate each proxy that was found (enabling this will make the scrapping process run more slower).
-            output_file_path: (str, optional, default: None): A custom output file path to save the proxies to.
-
+            None.
         Returns:
             None: this method doesn't return anything.
-
-        NOTE:
-            If the `group_by_protocol` option is turned on, the proxies will be stored in the same directory as the custom file.
         """
         geonode = Geonode(
             console=self.console,
@@ -120,21 +107,13 @@ class ProxyCrawler:
                 
                 continue
 
-            self.output_save_paths = self.save_proxies_to_file(
-                proxies=proxies,
-                group_by_protocol=self.cli_options.group_by_protocol,
-                output_file_path=self.cli_options.output_file_path
-            )
+            self.output_save_paths = self.save_proxies_to_file(proxies=proxies)
 
         if not self.cli_options.enable_save_on_run:
             for service in services:
                 proxies = services[service].valid_proxies
 
-                self.output_save_paths = self.save_proxies_to_file(
-                    proxies=proxies,
-                    group_by_protocol=self.cli_options.group_by_protocol,
-                    output_file_path=self.cli_options.output_file_path
-                )
+                self.output_save_paths = self.save_proxies_to_file(proxies=proxies)
 
         self.console.log(
             info.PROXIES_SAVED_IN_PATHS(
@@ -142,27 +121,15 @@ class ProxyCrawler:
             )
         )
 
-    def export_database_proxies(
-            self,
-            # proxies_count: int,
-            # group_by_protocol: bool | None = False,
-            # validate_proxies: bool | None = True,
-            # output_file_path: str | None = None
-        ) -> None:
+    def export_database_proxies(self) -> None:
         """
         Export a number of proxies from the database and validate them
 
         Args:
-            proxies_count (int): The number of proxies to export and validate from the database.
-            enable_save_on_run (bool, optional, default: True): Save the validated proxies of a service after finishing scrapping it.
-            group_by_protocol: (bool, optional, default: False): Save the proxies into seperate files depending on the supported protocol type.
-            output_file_path: (str, optional, default: None): A custom output file path to save the proxies to.
-
+            None.
+        
         Returns:
             None: This method doesn't return anything.
-
-        NOTE:
-            If the `group_by_protocol` option is turned on, the proxies will be stored in the same directory as the custom file.
         """
         saved_database_proxies = self.database_handler.fetch_proxies(
             proxies_count=self.cli_options.proxies_count
@@ -215,16 +182,10 @@ class ProxyCrawler:
                     proxy=proxy
                 )
         if len(valid_proxies) == 0 and not self.cli_options.validate_proxies:
-            self.output_save_paths = self.save_proxies_to_file(
-                proxies=saved_database_proxies,
-                group_by_protocol=self.cli_options.group_by_protocol,
-                output_file_path=self.cli_options.output_file_path
-            )
+            self.output_save_paths = self.save_proxies_to_file(proxies=saved_database_proxies)
         else:
             self.output_save_paths = self.save_proxies_to_file(
-                proxies=valid_proxies,
-                group_by_protocol=self.cli_options.group_by_protocol,
-                output_file_path=self.cli_options.output_file_path
+                proxies=valid_proxies
             )
 
         self.console.log(
@@ -283,30 +244,15 @@ class ProxyCrawler:
 
         return proxy.is_valid
 
-    def validate_proxies(
-            self,
-            proxies: list[str],
-            # proxy_file_path: str,
-            # protocol: str | None = None,
-            # test_all_protocols: bool | None = False,
-            # group_by_protocol: bool | None = False,
-            # output_file_path: str | None = None
-        ) -> None:
+    def validate_proxies(self, proxies: list[str]) -> None:
         """
         Validates proxies from a proxy list file
 
         Args:
             proxies (list[str]): A list of proxies in plain text in the format <protocol>://<ip>:<port>.
-            protocol (str, optional): The protocol to test the proxies on.
-            test_all_protocols (bool, optional, default: False): Evaluate the proxies against all available protocols.
-            group_by_protocol: (bool, optional, default: False): Save the proxies into seperate files depending on the supported protocol type.
-            output_file_path: (str, optional, default: None): A custom output file path to save the proxies to.
-
+    
         Returns:
             None: This method doesn't return anything.
-
-        NOTE:
-            If the `group_by_protocol` option is turned on, the proxies will be stored in the same directory as the custom file.
         """
         protocols = [
             "http",
@@ -376,9 +322,7 @@ class ProxyCrawler:
             self.cli_options.output_file_path = f"{self.cli_options.proxy_file_path.split('/')[-1].replace('.txt', '')}-valid.txt"
 
         self.output_save_paths = self.save_proxies_to_file(
-            proxies=valid_proxies,
-            group_by_protocol=self.cli_options.group_by_protocol,
-            output_file_path=self.cli_options.output_file_path
+            proxies=valid_proxies
         )
 
         self.console.log(
@@ -402,20 +346,13 @@ class ProxyCrawler:
 
         return re.match(regex, proxy)
 
-    def save_proxies_to_file(
-            self,
-            proxies: list[FreeProxyListModel | GeonodeModel | ProxyModel],
-            # group_by_protocol: bool | None = False,
-            # output_file_path: str | None = None
-        ) -> list[str]:
+    def save_proxies_to_file(self, proxies: list[FreeProxyListModel | GeonodeModel | ProxyModel]) -> list[str]:
         """
         Saves proxies to the output file path.
         In case no `output_file_path` was given the proxies will be saved based on if `group_by_protocol` is turned on.
 
         Args:
             proxies (list): List of instance of models `FreeProxyListMode`, `GeonodeModel` and `ProxyModel`.
-            group_by_protocol: (bool, optional, default: False): Save the proxies into seperate files depending on the supported protocol type.
-                output_file_path: (str, optional, default: None): A custom output file path to save the proxies to.
 
         Returns:
             list[str]: Returns a list paths `self.output_save_paths` where the proxies where saved. `
