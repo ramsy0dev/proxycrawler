@@ -1,11 +1,11 @@
 import os
 
 # Package main info
-PACKAGE = "proxycrawler"
-VERSION = "0.2.5"
-TAG = "v0.2.5"
-AUTHOR = "ramsy0dev"
-GITHUB = "https://github.com/ramsy0dev/proxycrawler"
+PACKAGE =   "proxycrawler"
+VERSION =   "0.2.6"
+TAG     =   "v0.2.6"
+AUTHOR  =   "ramsy0dev"
+GITHUB  =   "https://github.com/ramsy0dev/proxycrawler"
 
 # Banner
 BANNER = f"""[bold white]
@@ -15,7 +15,7 @@ BANNER = f"""[bold white]
   / /_/ / /  / /_/ />  </ /_/ / /__/ /  / /_/ /| |/ |/ / /  __/ /
  / .___/_/   \____/_/|_|\__, /\___/_/   \__,_/ |__/|__/_/\___/_/ Version [bold cyan]{VERSION}[bold white]
 /_/                    /____/
-                            Made by [bold green]`ramsy0dev`[bold white]
+                            Made by [bold green]`ramsy0dev`[reset]
 """
 
 # Home path
