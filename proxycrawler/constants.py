@@ -1,11 +1,11 @@
 import os
 
 # Package main info
-PACKAGE = "proxycrawler"
-VERSION = "0.2.5"
-TAG = "v0.2.5"
-AUTHOR = "ramsy0dev"
-GITHUB = "https://github.com/ramsy0dev/proxycrawler"
+PACKAGE =   "proxycrawler"
+VERSION =   "0.2.6"
+TAG     =   "v0.2.6"
+AUTHOR  =   "ramsy0dev"
+GITHUB  =   "https://github.com/ramsy0dev/proxycrawler"
 
 # Banner
 BANNER = f"""[bold white]
