@@ -7,11 +7,7 @@ from user_agent import generate_user_agent
 
 from proxycrawler import helpers
 from proxycrawler import constants
-from proxycrawler.messages import (
-    info,
-    debug,
-    errors
-)
+from proxycrawler.messages import debug
 from proxycrawler.src.database.tables import Proxies
 
 class ProxyModel(object):
