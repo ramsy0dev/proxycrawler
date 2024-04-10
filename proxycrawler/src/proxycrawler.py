@@ -242,7 +242,7 @@ class ProxyCrawler:
         Returns:
             bool: True if the proxy is valid, otherwise False is returned.
         """
-        if type(proxy.proxy) == str:
+        if isinstance(proxy.proxy, str):
             proxy.proxy = json.loads(proxy.proxy)
 
         delay_time = 7
@@ -278,7 +278,7 @@ class ProxyCrawler:
                     )
 
         if status_codes.count(200) >= 2:
-            proxy.is_valid == True
+            proxy.is_valid = True
 
         return proxy.is_valid
 
@@ -425,14 +425,14 @@ class ProxyCrawler:
         output_save_paths = []
 
         if output_file_path is None:
-            output_file_path = f"./proxycrawler-proxies.txt"
+            output_file_path = "./proxycrawler-proxies.txt"
 
         if not group_by_protocol:
             with open(output_file_path, "a") as save_proxies:
                 data = []
 
                 for proxy_data in proxies:
-                    if type(proxy_data.proxy) == str:
+                    if isinstance(proxy_data.proxy, str):
                         proxy_data.proxy = json.loads(proxy_data.proxy) # Reattache to a session
 
                     for proxy in proxy_data.proxy:
@@ -466,10 +466,10 @@ class ProxyCrawler:
         # Load the proxies into the "proxies" key in
         # protocols based on the supported protocol
         for proxy in proxies:
-            if type(proxy.proxy) == str:
+            if isinstance(proxy.proxy, str):
                 proxy.proxy = json.loads(proxy.proxy)
 
-            if type(proxy.protocols) == str:
+            if isinstance(proxy.protocols, str):
                 proxy.protocols = ast.literal_eval(proxy.protocols)
 
             for protocol in proxy.protocols:
