@@ -195,7 +195,7 @@ def update():
         status.update(f"Updating proxycrawler to [bold yellow]`{latest_tag}`")
         helpers.self_update()
 
-        console.log(f"[bold green][INFO] proxycrawler updated to [bold yellow]`{latest_tag}`")
+        console.log(f"[bold green][INFO][reset] proxycrawler updated to [bold yellow]`{latest_tag}`")
 
 def run():
     """ Runs proxycrawler """

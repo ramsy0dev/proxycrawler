@@ -3,4 +3,5 @@
     to help in debugging
 """
 
-EXCEPTION_RAISED_WHEN_VALIDATING_PROXY = lambda proxy, error: f"[bold blue][DEBUG] [bold white]Exception raised when validating proxy:[bold green]{proxy}[bold white]. Error: {error}"
+def EXCEPTION_RAISED_WHEN_VALIDATING_PROXY(proxy, error) -> str:
+    return f"[bold blue][DEBUG][reset] Exception raised when validating proxy:[bold green]{proxy}[bold white]. Error: {error}"
