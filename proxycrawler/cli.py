@@ -67,12 +67,7 @@ def scrap(
     )
 
     # Fetching proxies and validating them
-    proxy_crawler.crawl_proxies(
-        # enable_save_on_run=enable_save_on_run,
-        # group_by_protocol=group_by_protocol,
-        # validate_proxies=validate_proxies,
-        # output_file_path=output_file_path
-    )
+    proxy_crawler.crawl_proxies()
 
 @cli.command()
 def export_db(
@@ -114,12 +109,7 @@ def export_db(
         info.FETCHING_AND_VALIDATING_PROXIES_FROM_DATABASE
     )
 
-    proxy_crawler.export_database_proxies(
-        # proxies_count=proxies_count,
-        # group_by_protocol=group_by_protocol,
-        # validate_proxies=validate_proxies,
-        # output_file_path=output_file_path
-    )
+    proxy_crawler.export_database_proxies()
 
 @cli.command()
 def validate(
@@ -198,14 +188,7 @@ def validate(
         )
     )
 
-    proxy_crawler.validate_proxies(
-        proxies=proxies,
-        # protocol=protocol,
-        # test_all_protocols=test_all_protocols,
-        # group_by_protocol=group_by_protocol,
-        # proxy_file_path=proxy_file_path,
-        # output_file_path=output_file_path
-    )
+    proxy_crawler.validate_proxies(proxies=proxies)
 
 @cli.command()
 def update():
