@@ -2,8 +2,8 @@ import os
 
 # Package main info
 PACKAGE =   "proxycrawler"
-VERSION =   "0.2.6"
-TAG     =   "v0.2.6"
+VERSION =   "0.2.7"
+TAG     =   "v0.2.7"
 AUTHOR  =   "ramsy0dev"
 GITHUB  =   "https://github.com/ramsy0dev/proxycrawler"
 
