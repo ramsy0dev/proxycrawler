@@ -11,7 +11,7 @@ beautifulsoup4 = "^4.13.3"
 requests = "^2.32.3"
 user-agent = "^0.1.10"
 sqlalchemy = "^2.0.38"
-typer = "^0.15.1"
+typer = "^0.15.2"
 rich = "^13.9.4"
 
 [tool.poetry.scripts]
