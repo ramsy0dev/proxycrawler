@@ -12,7 +12,7 @@ requests = "^2.32.3"
 user-agent = "^0.1.10"
 sqlalchemy = "^2.0.39"
 typer = "^0.15.2"
-rich = "^13.9.4"
+rich = "^14.0.0"
 
 [tool.poetry.scripts]
 proxycrawler = 'proxycrawler.__main__:run'
