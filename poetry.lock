@@ -480,14 +480,14 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "typer"
-version = "0.15.3"
+version = "0.16.0"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "typer-0.15.3-py3-none-any.whl", hash = "sha256:c86a65ad77ca531f03de08d1b9cb67cd09ad02ddddf4b34745b5008f43b239bd"},
-    {file = "typer-0.15.3.tar.gz", hash = "sha256:818873625d0569653438316567861899f7e9972f2e6e0c16dab608345ced713c"},
+    {file = "typer-0.16.0-py3-none-any.whl", hash = "sha256:1f79bed11d4d02d4310e3c1b7ba594183bcedb0ac73b27a9e5f28f6fb5b98855"},
+    {file = "typer-0.16.0.tar.gz", hash = "sha256:af377ffaee1dbe37ae9440cb4e8f11686ea5ce4e9bae01b84ae7c63b87f1dd3b"},
 ]
 
 [package.dependencies]
@@ -543,4 +543,4 @@ six = "*"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "64f8cf2056dd83e10238bbd7b03c9f0792ff1e38c4981a0830fc59629cf7ec0a"
+content-hash = "6f7e56e62e5e47507735ce8923e5846bc43502ee1c2823fdefb67c590bbb3efd"
